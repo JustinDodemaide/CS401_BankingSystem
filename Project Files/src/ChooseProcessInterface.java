@@ -1,0 +1,16 @@
+import javax.swing.JPanel;
+public class ChooseProcessInterface extends JPanel implements State{
+
+	@Override
+	public void enter() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void exit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
