@@ -4,8 +4,8 @@ public class StateMachine {
 	private static State currentState = states[0];
 	public enum stateNames{CHOOSE_PROCESS,LOGIN,MAIN_CONTROLS};
 	
-	public processes process;
-	public enum processes{};
+	public static processes process;
+	public enum processes{TELLER,ATM};
 	
 	public ServerClient serverClient;
 	public User user;
@@ -28,3 +28,10 @@ public class StateMachine {
 		initial constant is assigned an ordinal of zero */
 	}
 }
+
+/*
+Unit test:
+	Make sure none of the states are null 
+	Make sure current state isn't null
+	Make sure transitionTo transitions to the current state
+ */
