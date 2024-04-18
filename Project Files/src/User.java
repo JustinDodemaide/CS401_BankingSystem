@@ -61,7 +61,7 @@ public class User {
 		FileWriter writer2 = new FileWriter(path2);
 		for (int i = 0; i < numAccounts; i++) {
 			writer2.write(accounts.get(i).data() + "\n");	// Write each account into account file in form:
-		}													// id, type, total
+		}							// id, type, total
 		writer2.flush();
 		writer2.close();
 		return;
