@@ -23,14 +23,24 @@ public class Account {
 	}
 	
 	public void addToTotal(double amount) {
-		
+		total = total + amount;
 	}
 	
 	public void removeFromTotal(double amount) {
-		
+
+		total = total - amount;
+
+		if ((total - amount) < 0) {
+			System.out.println("Cannot withdraw as overdraft fees would incur...");
+			return;
+		}
+		else {
+			total = total - amount;
+		}
 	}
 	
-	public String data() {
-		return "";
+	public String toString() {
+		String newString = this.id + ", " + this.type + ", " + this.total;
+		return newString;
 	}
 }
