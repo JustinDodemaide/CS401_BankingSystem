@@ -27,9 +27,9 @@ public class Account {
 	}
 	
 	public void removeFromTotal(double amount) {
-<<<<<<< Updated upstream
+
 		total = total - amount;
-=======
+
 		if ((total - amount) < 0) {
 			System.out.println("Cannot withdraw as overdraft fees would incur...");
 			return;
@@ -37,10 +37,9 @@ public class Account {
 		else {
 			total = total - amount;
 		}
->>>>>>> Stashed changes
 	}
 	
-	public String data() {
+	public String toString() {
 		String newString = this.id + ", " + this.type + ", " + this.total;
 		return newString;
 	}
