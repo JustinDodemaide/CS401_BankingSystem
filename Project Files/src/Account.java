@@ -23,11 +23,11 @@ public class Account {
 	}
 	
 	public void addToTotal(double amount) {
-		
+		total = total + amount;
 	}
 	
 	public void removeFromTotal(double amount) {
-		
+		total = total - amount;
 	}
 	
 	public String data() {
