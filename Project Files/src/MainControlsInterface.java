@@ -1,4 +1,5 @@
 import java.awt.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,7 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-public class MainControlsInterface implements State{
+public class MainControlsInterface implements State {
+	private static final long serialVersionUID = 1L;
 	private JFrame frame = new JFrame(); // Keep the UI elements loaded into memory for performance
 	private JPanel accountPanel = new JPanel();;
 	private ArrayList<JPanel> accountPanelItems = new ArrayList<JPanel>();

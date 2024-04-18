@@ -5,7 +5,7 @@
 	import java.net.*; // Imports the networking classes for socket communication.
 	import java.util.concurrent.*; // Imports concurrency utilities, particularly for managing threads.
 
-	public class ServerClient {
+	public class Server {
 	    private static final int PORT = 12345; // The port number on which the server listens for connections.
 
 	    public static void main(String[] args) throws IOException {
@@ -35,6 +35,9 @@
 	        	try(ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
 	        			ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream())){
 	        		while(true) {
+	        		
+	   
+	        			// to do
 	        			
 	        		
 	        	}
