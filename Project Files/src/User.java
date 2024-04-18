@@ -1,10 +1,16 @@
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class User {
 	private String username;
 	private String pin;
-	private Account[] accounts;
+	private ArrayList<Account> accounts;
 	private int numAccounts;
-
+	private String sourceName;					// Filename for saving data
+	
 	public User(String username) {
 		this.username = username;
 	}
@@ -21,21 +27,30 @@ public class User {
 		account.removeFromTotal(amount);
 	}
 	
-	public void transfer(Account account, Account, targetAcc, double amount) {
-		account.removeFromTotal(amount);
-		targetAcc.addToTotal(amount);
+	public void transfer(Account account, Account targetAcc, double amount) {
+		account.removeFromTotal(amount);		// Remove amount from original account
+		targetAcc.addToTotal(amount);			// Add amount to target account
 	}
 	
 	public void addAccount(Account account) {
-		Account[numAccounts] = new Account();
+		accounts.add(account);					// Add account to arraylist
 		numAccounts++;
 	}
 	
 	public void removeAccount(Account account) {
+		accounts.remove(account);				// Remove account from arraylist
 		numAccounts--;
 	}
 	
-	public void saveData() {
+	public void saveData() throws IOException {
+		File path = new File(sourceName);
+		FileWriter writer = new FileWriter(path);
+		for (int i = 0; i < numAccounts; i++) {
+			writer.write(accounts.toString() + "\n");
+		}
+		writer.flush();
+		writer.close();
+		return;
 		// Save the username, pin, and IDs of each account in the user file
 		// then for each of the accounts in accounts[],
 		// call .data() and store that in an account file
