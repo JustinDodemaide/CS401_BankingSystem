@@ -1,3 +1,4 @@
+package bankingPackage;
 
 public class Account {
 	private String id;
@@ -8,6 +9,14 @@ public class Account {
 		this.id = id;
 		this.type = type;
 		this.total = total;
+	}
+	
+	public void setID(String id) {
+		this.id = id;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	public String getID() {
