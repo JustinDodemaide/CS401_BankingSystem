@@ -25,6 +25,8 @@
 
 	    private static class ClientHandler implements Runnable { // A nested static class that defines the logic for handling client connections.
 	        private final Socket clientSocket; // The client socket this handler is responsible for.
+	        private PrintWriter out;      // For writing responses to the client
+	        private BufferedReader in;    // For reading requests from the client
 
 	        public ClientHandler(Socket socket) { // Constructor for ClientHandler.
 	            this.clientSocket = socket; // Initializes the clientSocket with the socket for the connected client.
@@ -32,23 +34,105 @@
 	        
 	        @Override
 	        public void run() {
-	        	try(ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
-	        			ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream())){
-	        		while(true) {
-	        		
-	   
-	        			// to do
-	        			
-	        		
-	        	}
-	        } catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    
+	            try {
+	                out = new PrintWriter(clientSocket.getOutputStream(), true);
+	                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+	                // Read client inputs until the connection is closed
+	                String inputLine;
+	                while ((inputLine = in.readLine()) != null) {
+	                    System.out.println("Received: " + inputLine); // Log received command
+	                    processInput(inputLine);  // Process the received command
+	                }
+	            } catch (IOException e) {
+	                System.out.println("Exception in ClientHandler: " + e.getMessage());
+	                e.printStackTrace();
+	            } finally {
+	                try {
+	                    closeConnections(); // Close all connections when done
+	                } catch (IOException e) {
+	                    System.out.println("Error when closing connection: " + e.getMessage());
+	                }
+	            }
+	        }
+	        
+	        
+	        
+	        private void processInput(String inputLine) {
+	            String[] tokens = inputLine.split(",");
+	            String command = tokens[0].toLowerCase();
+
+	            try {
+	                switch (command) {
+	                    case "login":
+	                        handleLogin(tokens);
+	                        break;
+	                    case "addaccount":
+	                        handleAddAccount(tokens);
+	                        break;
+	                    case "updateaccount":
+	                        handleUpdateAccount(tokens);
+	                        break;
+	                    case "removeaccount":
+	                        handleRemoveAccount(tokens);
+	                        break;
+	                   case "deposit":
+	                        handleDeposit(tokens);
+	                        break;
+	                    case "withdraw":
+	                        handleWithdraw(tokens);
+	                        break;
+	                    case "transfer":
+	                        handleTransfer(tokens);
+	                        break;   
+	                    default:
+	                        out.println("Error: Unknown command");
+	                        break;
+	                }
+	            } catch (Exception e) {
+	                out.println("Error processing command: " + e.getMessage());
+	                e.printStackTrace();
+	            }
+	        }
+	        
+	        //Login command processing
+	        private void handleLogin(String[] tokens) {
+	        	
+	        }
+	        
+	        //update command processing
+	        private void handleUpdateAccount(String[] tokens) {
+	        	
+	        }
+	        
+	        
+	        //remove account 
+	        private void handleAddAccount(String[] tokens) {
+	        	
+	        }
+	        
+	        private void handleRemoveAccount(String[] tokens) {
+	        	
+	        }
+	        
+	        private void handleDeposit(String[] tokens) {
+	        	
+	        }
+	        
+	        private void handleWithdraw(String[] tokens) {
+	        	
+	        }
+	        
+	        private void handleTransfer(String[] tokens) {
+	        	
+	        }
+	        
+	        private void closeConnections() throws IOException {
+	            if (out != null) out.close();
+	            if (in != null) in.close();
+	            if (clientSocket != null) clientSocket.close();
+	        }
 	    }
-	
 	}
-}
 	        
 	    
