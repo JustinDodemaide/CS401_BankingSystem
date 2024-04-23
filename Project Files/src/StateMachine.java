@@ -4,8 +4,8 @@ public class StateMachine {
 	private static State currentState = states[0];
 	public enum stateNames{CHOOSE_PROCESS,LOGIN,MAIN_CONTROLS};
 	
-	public processes process;
-	public enum processes{};
+	public static processes process;
+	public enum processes{TELLER,ATM};
 	
 	public ServerClient serverClient;
 	public User user;
@@ -15,7 +15,7 @@ public class StateMachine {
 		states[1] = new LoginInterface();
 		states[2] = new MainControlsInterface();
 		
-		currentState = states[0];
+		currentState = states[1];
 		currentState.enter();
 	}
 	
