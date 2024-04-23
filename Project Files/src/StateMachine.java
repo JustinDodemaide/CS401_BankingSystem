@@ -15,7 +15,7 @@ public class StateMachine {
 		states[1] = new LoginInterface();
 		states[2] = new MainControlsInterface();
 		
-		currentState = states[0];
+		currentState = states[1];
 		currentState.enter();
 	}
 	
