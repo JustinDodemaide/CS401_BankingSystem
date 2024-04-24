@@ -40,7 +40,7 @@ public class Account {
 	}
 	
 	public String toString() {
-		String newString = this.id + ", " + this.type + ", " + this.total;
+		String newString = this.id + "/" + this.type + "/" + this.total;
 		return newString;
 	}
 }
