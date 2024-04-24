@@ -12,17 +12,21 @@ public class Client {
 	private ObjectInputStream fromServer;
 	
 	public Client(){
+	
+	}
+	
+	public boolean connectToServer() {
 		// Connect to server
 		try {
 			socket = new Socket("localhost", 12345);
 		} catch (UnknownHostException e) {
 			System.err.println("Unable to connect to server");
 			e.printStackTrace();
-			return;
+			return false;
 		} catch (IOException e) {
 			System.err.println("Unable to connect to server");
 			e.printStackTrace();
-			return;
+			return false;
 		}
 		
 		// Initialize input/output streams
@@ -31,15 +35,17 @@ public class Client {
 		} catch (IOException e) {
 			System.err.println("Unable to connect to server");
 			e.printStackTrace();
-			return;
+			return false;
 		}
 		try {
 			fromServer = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			System.err.println("Unable to connect to server");
 			e.printStackTrace();
-			return;
+			return false;
 		}
+		
+		return true;
 	}
 	
 	public void disconect() {

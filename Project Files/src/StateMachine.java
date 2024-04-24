@@ -17,14 +17,14 @@ public class StateMachine {
 		
 		currentState = states[0];
 		currentState.enter();
+		
+		if(!client.connectToServer())
+			System.err.println("Client didn't connect to server");
 	}
 	
 	public static void transitionTo(stateNames targetState) {
 		currentState.exit();
 		currentState = states[targetState.ordinal()];
 		currentState.enter();
-		/* Returns the ordinal of this enumeration constant 
-		(its position in its enum declaration, where the 
-		initial constant is assigned an ordinal of zero */
 	}
 }
