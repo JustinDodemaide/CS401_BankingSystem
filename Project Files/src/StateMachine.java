@@ -7,7 +7,7 @@ public class StateMachine {
 	public static processes process;
 	public static enum processes{TELLER,ATM};
 	
-	public static Client client;
+	public static Client client = new Client();
 	public static User user;
 	
 	public static void main(String[] args) {

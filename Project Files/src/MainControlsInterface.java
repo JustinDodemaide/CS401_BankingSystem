@@ -146,5 +146,14 @@ public class MainControlsInterface implements State {
 			}
 		});
         buttonPanel.add(deleteAccount);    
+        
+        JButton logout = new JButton("Logout");
+		logout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("logout pressed");
+				StateMachine.transitionTo(StateMachine.stateNames.LOGIN);
+			}
+		});
+        buttonPanel.add(logout);    
     }
 }

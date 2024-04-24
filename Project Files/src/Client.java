@@ -14,7 +14,7 @@ public class Client {
 	public Client(){
 		// Connect to server
 		try {
-			socket = new Socket("localhost", 1234);
+			socket = new Socket("localhost", 12345);
 		} catch (UnknownHostException e) {
 			System.err.println("Unable to connect to server");
 			e.printStackTrace();
