@@ -5,7 +5,7 @@ public class StateMachine {
 	public enum stateNames{CHOOSE_PROCESS,LOGIN,MAIN_CONTROLS};
 	
 	public static processes process;
-	public enum processes{TELLER,ATM};
+	public static enum processes{TELLER,ATM};
 	
 	public static Client client;
 	public static User user;
