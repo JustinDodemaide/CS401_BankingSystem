@@ -5,6 +5,7 @@ import java.util.concurrent.*; // Imports concurrency utilities, particularly fo
 
 public class Server {
 		private static AuthenticationService authenticationService = new AuthenticationService();
+		private static AccountService accountService = new AccountService();
 	
 		private static final int PORT = 12345; // The port number on which the server listens for connections.
 
@@ -64,26 +65,26 @@ public class Server {
 
 	            try {
 	                switch (command) {
-	                    case "login":
-	                        handleLogin(tokens);
+	                    case "authenticateUser":
+	                        handleAuthenticateUser(tokens);
 	                        break;
-	                    case "addaccount":
-	                        handleAddAccount(tokens);
+	                    case "addUser":
+	                        handleAddUser(tokens);
 	                        break;
-	                    case "updateaccount":
+	                    case "updateUser":
+	                        handleUpdateUser(tokens);
+	                        break;
+	                    case "newAccount":
+	                        handleNewAccount(tokens);
+	                        break;
+	                   case "getAccount":
+	                        handleGetAccount(tokens);
+	                        break;
+	                    case "updateAccount":
 	                        handleUpdateAccount(tokens);
 	                        break;
-	                    case "removeaccount":
+	                    case "removeAccount":
 	                        handleRemoveAccount(tokens);
-	                        break;
-	                   case "deposit":
-	                        handleDeposit(tokens);
-	                        break;
-	                    case "withdraw":
-	                        handleWithdraw(tokens);
-	                        break;
-	                    case "transfer":
-	                        handleTransfer(tokens);
 	                        break;   
 	                    default:
 	                        out.println("Error: Unknown command");
@@ -96,7 +97,7 @@ public class Server {
 	        }
 	        
 	        //Login command processing
-	        private void handleLogin(String[] tokens) {
+	        private void handleAuthenticateUser(String[] tokens) {
 	        	final int USERNAME = 0;
 	        	final int PW = 1;
 	        	boolean success = authenticationService.authenticateUser(tokens[USERNAME],tokens[PW]);
@@ -109,30 +110,40 @@ public class Server {
 	        }
 	        
 	        //update command processing
-	        private void handleUpdateAccount(String[] tokens) {
-	        	
+	        private void handleAddUser(String[] tokens) {
+	        	// TODO
 	        }
 	        
 	        
 	        //remove account 
-	        private void handleAddAccount(String[] tokens) {
+	        private void handleUpdateUser(String[] tokens) {
+	        	// TODO
+	        }
+	        
+	        private void handleNewAccount(String[] tokens) {
+	        	String accountData = accountService.createAccount(tokens);
 	        	
+	        	String message = accountData;
+	        	out.println(message);
+	        }
+	        
+	        private void handleGetAccount(String[] tokens) {
+	        	// Get account data (type, amount) from file
+	        	String data = accountService.getAccountData(tokens);
+	        	String message;
+	        	if(data.equals("failed"))
+	        		message = "failed";
+	        	// If successful, send message with data
+	        	message = data;
+	        	out.println(message);
+	        }
+	        
+	        private void handleUpdateAccount(String[] tokens) {
+	        	accountService.updateAccount(tokens);
 	        }
 	        
 	        private void handleRemoveAccount(String[] tokens) {
-	        	
-	        }
-	        
-	        private void handleDeposit(String[] tokens) {
-	        	
-	        }
-	        
-	        private void handleWithdraw(String[] tokens) {
-	        	
-	        }
-	        
-	        private void handleTransfer(String[] tokens) {
-	        	
+	        	accountService.closeAccount(tokens);
 	        }
 	        
 	        private void closeConnections() throws IOException {
@@ -142,5 +153,3 @@ public class Server {
 	        }
 	    }
 	}
-	        
-	    
