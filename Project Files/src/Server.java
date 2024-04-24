@@ -99,8 +99,9 @@ public class Server {
 	        
 	        //Login command processing
 	        private void handleAuthenticateUser(String[] tokens) {
-	        	final int USERNAME = 0;
-	        	final int PW = 1;
+	        	// 0 is reserved for the command
+	        	final int USERNAME = 1;
+	        	final int PW = 2;
 	        	boolean success = authenticationService.authenticateUser(tokens[USERNAME],tokens[PW]);
 	        	String message;
 	        	if(success)
@@ -116,9 +117,18 @@ public class Server {
 	        }
 	        
 	        
-	        //remove account 
+	        //remove account
 	        private void handleUpdateUser(String[] tokens) {
-	        	// TODO
+	        	// 0 is reserved for the command
+	        	final int USERNAME = 1;
+	        	final int PW = 2;
+	        	boolean success = authenticationService.makeNewUserAttempt(tokens[USERNAME],tokens[PW]);
+	        	String message;
+	        	if(!success)
+	        		message = "failed";
+	        	else
+	        		message = "user created";
+	        	out.println(message);
 	        }
 	        
 	        private void handleNewAccount(String[] tokens) {

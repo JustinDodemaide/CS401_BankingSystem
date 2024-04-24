@@ -31,7 +31,6 @@ public class Client {
 			e.printStackTrace();
 			return false;
 		}
-		System.out.println("1");
 		
 		// Initialize input/output streams
 		try {
@@ -40,15 +39,13 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("2");
         try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("3");
-		
+        
 		return true;
 	}
 	
@@ -83,7 +80,7 @@ public class Client {
 		return tokens;
 	}
 	
-	public boolean attemptLogin(String username, String password) {		
+	public boolean attemptLogin(String username, String password) {
 		String loginMessage = createMessage(new String[]{"authenticateUser",username,password});
 		String[] response = sendMessage(loginMessage);
 		

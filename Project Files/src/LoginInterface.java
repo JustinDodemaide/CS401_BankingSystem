@@ -79,9 +79,9 @@ public class LoginInterface implements State {
                 char[] passwordChars = passwordField.getPassword();
                 String password = new String(passwordChars);
                 
-            	// if(StateMachine.client.attemptNewUser(username,password)){
+            	if(StateMachine.client.attemptNewUser(username,password)){
                 	// Success
-            	// }
+            	}
                 
                 warningLabel.setText("Unable to make new user");
                 warningLabel.setVisible(true);

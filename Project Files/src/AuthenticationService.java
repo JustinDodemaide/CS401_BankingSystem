@@ -50,24 +50,25 @@ public class AuthenticationService {
 		return false;
 	}
 
-	public void makeNewUserAttempt(String username, String password) {
+	public boolean makeNewUserAttempt(String username, String password) {
 
 		if (doesUserExist(username, password)) {
 			System.out.println("There is already a user with that login information.");
-			return;
+			return false;
 		}
 		loginInfoMap.put(username, password);
 
 		try {
 			FileWriter myWriter = new FileWriter("loginInfo.txt", true);
 
-			myWriter.write("\n" + username + "," + password);
+			myWriter.write("\n" + username + "," + password + ",");
 
 			myWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+		return true;
 	}
 
 	public boolean doesUserExist(String username, String password) {
