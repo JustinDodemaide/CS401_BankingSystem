@@ -12,8 +12,9 @@ public class User {
 	private String userFile;					// Filename for saving user data
 	private String accountFile;					// Filename for saving account data
 	
-	public User(String username) {
+	public User(String username, String pin) {
 		this.username = username;
+		this.pin = pin;
 	}
 	
 	public String getUsername() {

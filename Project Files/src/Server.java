@@ -1,12 +1,12 @@
+//private BankServer server;
+import java.io.*; // Imports the IO classes for handling input and output streams.
+import java.net.*; // Imports the networking classes for socket communication.
+import java.util.concurrent.*; // Imports concurrency utilities, particularly for managing threads.
 
-
-	//private BankServer server;
-	import java.io.*; // Imports the IO classes for handling input and output streams.
-	import java.net.*; // Imports the networking classes for socket communication.
-	import java.util.concurrent.*; // Imports concurrency utilities, particularly for managing threads.
-
-	public class Server {
-	    private static final int PORT = 12345; // The port number on which the server listens for connections.
+public class Server {
+		private static AuthenticationService authenticationService = new AuthenticationService();
+	
+		private static final int PORT = 12345; // The port number on which the server listens for connections.
 
 	    public static void main(String[] args) throws IOException {
 	        ExecutorService pool = Executors.newFixedThreadPool(20); // Creates a thread pool with 20 threads for handling client connections.
@@ -97,7 +97,15 @@
 	        
 	        //Login command processing
 	        private void handleLogin(String[] tokens) {
-	        	
+	        	final int USERNAME = 0;
+	        	final int PW = 1;
+	        	boolean success = authenticationService.authenticateUser(tokens[USERNAME],tokens[PW]);
+	        	String message;
+	        	if(success)
+	        		message = "user found";
+	        	else
+	        		message = "user not found";
+	        	out.println(message);
 	        }
 	        
 	        //update command processing
