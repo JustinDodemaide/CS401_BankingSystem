@@ -44,9 +44,14 @@ public class LoginInterface implements State {
                 char[] passwordChars = passwordField.getPassword();
                 String password = new String(passwordChars);
                 
-                // once password is entered and is verified
-                // move to the main control interface
-
+                if(StateMachine.client.attemptLogin(username,password)) {
+                	// Credentials are incorrect, user has not been logged in
+                	StateMachine.transitionTo(StateMachine.stateNames.MAIN_CONTROLS);
+                	return;
+                }
+                
+                // Credentials are incorrect
+                // Display warning/error, clear fields
             }
         });
     }

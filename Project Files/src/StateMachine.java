@@ -7,15 +7,15 @@ public class StateMachine {
 	public static processes process;
 	public enum processes{TELLER,ATM};
 	
-	public ServerClient serverClient;
-	public User user;
+	public static Client client;
+	public static User user;
 	
 	public static void main(String[] args) {
 		states[0] = new ChooseProcessInterface();
 		states[1] = new LoginInterface();
 		states[2] = new MainControlsInterface();
 		
-		currentState = states[1];
+		currentState = states[0];
 		currentState.enter();
 	}
 	

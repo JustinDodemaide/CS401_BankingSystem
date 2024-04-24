@@ -37,8 +37,8 @@ public class AuthenticationService {
 	public Map<String, String> getInfo() {
 		return loginInfoMap;
 	}
-
-	public boolean loginAttempt(String username, String password) {
+	
+	public boolean authenticateUser(String username, String password) {
 
 		if (!loginInfoMap.containsKey(username)) {
 			return false;
@@ -52,7 +52,7 @@ public class AuthenticationService {
 
 	public void makeNewUserAttempt(String username, String password) {
 
-		if (doesAccountExist(username, password)) {
+		if (doesUserExist(username, password)) {
 			System.out.println("There is already a user with that login information.");
 			return;
 		}
@@ -70,7 +70,7 @@ public class AuthenticationService {
 
 	}
 
-	public boolean doesAccountExist(String username, String password) {
+	public boolean doesUserExist(String username, String password) {
 		if (loginInfoMap.containsKey(username)) {
 			return true;
 		} else {
@@ -78,6 +78,7 @@ public class AuthenticationService {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		AuthenticationService authService = new AuthenticationService();
 		System.out.println(authService.loginAttempt("nicoSavaides", "5050"));
@@ -93,4 +94,5 @@ public class AuthenticationService {
 		authService.makeNewUserAttempt("nicoSavaides", "3330");
 
 	}
+	*/
 }
