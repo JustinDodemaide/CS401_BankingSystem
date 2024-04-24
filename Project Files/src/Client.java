@@ -66,27 +66,45 @@ public class Client {
 		}
 	}
 	
-	public boolean attemptLogin(String username, String password) {		
-		String loginMessage = createMessage(new String[]{"authenticateUser",username,password});
-		
-		out.println(loginMessage);
+	private String[] sendMessage(String message) {
+		out.println(message);
 
-		String loginResponse = "";
+		String response = "";
 		try {
-			loginResponse = in.readLine();
+			response = in.readLine();
 		} catch (IOException e) {
+			System.err.println("Unable to read server reply");
 			e.printStackTrace();
 		}
 		
-		System.out.println("login response: " + loginResponse);
+		System.out.println("response: " + response);
 		// Parse response
-		String[] tokens = parseMessage(loginResponse);
+		String[] tokens = parseMessage(response);
+		return tokens;
+	}
+	
+	public boolean attemptLogin(String username, String password) {		
+		String loginMessage = createMessage(new String[]{"authenticateUser",username,password});
+		String[] response = sendMessage(loginMessage);
 		
 		final int STATUS = 0;
-		if(tokens[STATUS].equals("user not found"))
+		if(response[STATUS].equals("user not found"))
 			return false;
 		
 		// If user exists and pw was correct, initialize user
+		StateMachine.user = new User(username,password);
+		return true;
+	}
+	
+	public boolean attemptNewUser(String username, String password) {
+		String newUserMessage = createMessage(new String[]{"adduser",username,password});
+		String[] response = sendMessage(newUserMessage);
+		
+		final int STATUS = 0;
+		if(response[STATUS].equals("failed"))
+			return false;
+		
+		// If new user was created, initialize user
 		StateMachine.user = new User(username,password);
 		return true;
 	}
