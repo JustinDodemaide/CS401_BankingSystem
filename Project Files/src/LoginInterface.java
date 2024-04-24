@@ -9,31 +9,45 @@ public class LoginInterface implements State {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
+    private JLabel warningLabel = new JLabel();
+    
+    private JPanel tellerPanel;
     
     public LoginInterface() {
 		frame.setTitle("Login");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	
-    	JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 1)); // interface is set up in a single column
-
+		// ATM Options
+    	JPanel atmPanel = new JPanel();
+    	atmPanel.setLayout(new GridLayout(0, 1)); // interface is set up in a single column
         JLabel usernameLabel = new JLabel("Username");
         usernameField = new JTextField(); // a text field for users to input their username
         JLabel passwordLabel = new JLabel("Password");
         passwordField = new JPasswordField(); // a password field for users to input password
-        JPanel createAccountPanel = new JPanel();
-        JLabel createAccountLabel = new JLabel("Create Account"); // a space for creating an account
-        createAccountPanel.add(createAccountLabel);
         JButton loginButton = new JButton("Login");
-
-        panel.add(usernameLabel);
-        panel.add(usernameField);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(createAccountPanel);
-        panel.add(loginButton);
-        // adding components to panel
+        atmPanel.add(usernameLabel);
+        atmPanel.add(usernameField);
+        atmPanel.add(passwordLabel);
+        atmPanel.add(passwordField);
+        atmPanel.add(loginButton);
+        warningLabel.setVisible(false);
+        atmPanel.add(warningLabel);
         
+        // Teller elements
+        tellerPanel = new JPanel();
+        tellerPanel.setLayout(new GridLayout(0, 1));
+        tellerPanel.add(new JSeparator());
+        JButton makeUserButton = new JButton("Make New User");
+        tellerPanel.add(makeUserButton);
+        
+        // Put both into one panel
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(0, 1));
+        panel.setBorder(BorderFactory.createTitledBorder("Login"));
+        panel.add(atmPanel);
+        panel.add(tellerPanel);
+        
+        // Add panel to frame
         frame.add(panel);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -52,15 +66,42 @@ public class LoginInterface implements State {
                 
                 // Credentials are incorrect
                 // Display warning/error, clear fields
+                warningLabel.setText("Unable to login");
+                warningLabel.setVisible(true);
+                usernameField.setText("");
+                passwordField.setText("");
             }
         });
+        
+        makeUserButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	String username = usernameField.getText();
+                char[] passwordChars = passwordField.getPassword();
+                String password = new String(passwordChars);
+                
+            	// if(StateMachine.client.attemptNewUser(username,password)){
+                	// Success
+            	// }
+                
+                warningLabel.setText("Unable to make new user");
+                warningLabel.setVisible(true);
+                usernameField.setText("");
+                passwordField.setText("");
+            }
+        });
+        
     }
 
     public void enter() {
     	frame.setVisible(true);
+    	
+    	// If process is Teller, unhide the "make new user" option
+    	boolean teller = StateMachine.process == StateMachine.processes.TELLER;
+    	tellerPanel.setVisible(teller);
     }
 
     public void exit() {
+        warningLabel.setVisible(false);
     	frame.setVisible(false);
     }
 }
