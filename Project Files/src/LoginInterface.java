@@ -58,12 +58,9 @@ public class LoginInterface implements State {
 
     public void enter() {
     	frame.setVisible(true);
-
-        // StateMachine.showMainControls(); // moves on to the main control once login is successful
     }
 
     public void exit() {
-        // setVisible(false); // hides the log in interface once they hit enter
-
+    	frame.setVisible(false);
     }
 }

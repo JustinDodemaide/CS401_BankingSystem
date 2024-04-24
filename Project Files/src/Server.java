@@ -62,28 +62,29 @@ public class Server {
 	        private void processInput(String inputLine) {
 	            String[] tokens = inputLine.split(",");
 	            String command = tokens[0].toLowerCase();
+	            System.out.println(command);
 
 	            try {
 	                switch (command) {
-	                    case "authenticateUser":
+	                    case "authenticateuser":
 	                        handleAuthenticateUser(tokens);
 	                        break;
-	                    case "addUser":
+	                    case "adduser":
 	                        handleAddUser(tokens);
 	                        break;
-	                    case "updateUser":
+	                    case "updateuser":
 	                        handleUpdateUser(tokens);
 	                        break;
-	                    case "newAccount":
+	                    case "newaccount":
 	                        handleNewAccount(tokens);
 	                        break;
-	                   case "getAccount":
+	                   case "getaccount":
 	                        handleGetAccount(tokens);
 	                        break;
-	                    case "updateAccount":
+	                    case "updateaccount":
 	                        handleUpdateAccount(tokens);
 	                        break;
-	                    case "removeAccount":
+	                    case "removeaccount":
 	                        handleRemoveAccount(tokens);
 	                        break;   
 	                    default:

@@ -1,15 +1,18 @@
+import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
 	private Socket socket;
-	private ObjectOutputStream toServer;
-	private ObjectInputStream fromServer;
+	private PrintWriter out;
+	private BufferedReader in;
 	
 	public Client(){
 	
@@ -28,22 +31,23 @@ public class Client {
 			e.printStackTrace();
 			return false;
 		}
+		System.out.println("1");
 		
 		// Initialize input/output streams
 		try {
-			toServer = new ObjectOutputStream(socket.getOutputStream());
+			out = new PrintWriter(socket.getOutputStream(), true);
 		} catch (IOException e) {
-			System.err.println("Unable to connect to server");
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
 		}
-		try {
-			fromServer = new ObjectInputStream(socket.getInputStream());
+		System.out.println("2");
+        try {
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (IOException e) {
-			System.err.println("Unable to connect to server");
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
 		}
+		System.out.println("3");
 		
 		return true;
 	}
@@ -63,28 +67,18 @@ public class Client {
 	}
 	
 	public boolean attemptLogin(String username, String password) {		
-		String loginMessage = createMessage(new String[]{"login",username,password});
+		String loginMessage = createMessage(new String[]{"authenticateUser",username,password});
+		
+		out.println(loginMessage);
+
+		String loginResponse = "";
 		try {
-			toServer.writeObject(loginMessage);
+			loginResponse = in.readLine();
 		} catch (IOException e) {
-			System.err.println("Unable to send message to server");
 			e.printStackTrace();
-			return false;
-		}
-		String loginResponse;
-		try {
-			loginResponse = (String)fromServer.readObject();
-		} catch (ClassNotFoundException e) {
-			System.err.println("Unable to receive message from server");
-			e.printStackTrace();
-			return false;		
-		} catch (IOException e) {
-			System.err.println("Unable to receive message from server");
-			e.printStackTrace();
-			return false;
 		}
 		
-		System.out.println(loginResponse);
+		System.out.println("login response: " + loginResponse);
 		// Parse response
 		String[] tokens = parseMessage(loginResponse);
 		
