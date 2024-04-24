@@ -66,6 +66,7 @@ public class Client {
 	private String[] sendMessage(String message) {
 		out.println(message);
 
+		System.out.println("awaiting response");
 		String response = "";
 		try {
 			response = in.readLine();
@@ -103,6 +104,7 @@ public class Client {
 		
 		// If new user was created, initialize user
 		StateMachine.user = new User(username,password);
+		System.out.println("successfully made new user");
 		return true;
 	}
 	

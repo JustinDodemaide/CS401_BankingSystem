@@ -68,6 +68,7 @@ public class AuthenticationService {
 			e.printStackTrace();
 		}
 
+		System.out.println("New user added to file");
 		return true;
 	}
 

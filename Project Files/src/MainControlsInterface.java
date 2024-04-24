@@ -56,8 +56,7 @@ public class MainControlsInterface implements State {
 		// 1 Change welcome message (in case user changed)
 		// 2 Reset the account items
 
-		// TODO
-		//frame.setTitle("Welcome, " + StateMachine.user.getName());
+		frame.setTitle("Welcome, " + StateMachine.user.getUsername());
 		
 		// Reset the account items
 		accountPanelItems.clear();

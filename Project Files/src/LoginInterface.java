@@ -31,6 +31,7 @@ public class LoginInterface implements State {
         atmPanel.add(passwordField);
         atmPanel.add(loginButton);
         warningLabel.setVisible(false);
+        warningLabel.setForeground(Color.red);
         atmPanel.add(warningLabel);
         
         // Teller elements
@@ -59,7 +60,7 @@ public class LoginInterface implements State {
                 String password = new String(passwordChars);
                 
                 if(StateMachine.client.attemptLogin(username,password)) {
-                	// Credentials are incorrect, user has not been logged in
+                	// Credentials are correct, user has been logged in
                 	StateMachine.transitionTo(StateMachine.stateNames.MAIN_CONTROLS);
                 	return;
                 }
@@ -79,8 +80,19 @@ public class LoginInterface implements State {
                 char[] passwordChars = passwordField.getPassword();
                 String password = new String(passwordChars);
                 
+                // Check for illegal characters
+                if(username.contains(",") || password.contains(",")) {
+                    warningLabel.setText("\',\' not allowed");
+                    warningLabel.setVisible(true);
+                    usernameField.setText("");
+                    passwordField.setText("");
+                    return;
+                }
+                
             	if(StateMachine.client.attemptNewUser(username,password)){
-                	// Success
+            		// New user was successfully created and logged in
+            		StateMachine.transitionTo(StateMachine.stateNames.MAIN_CONTROLS);
+                	return;
             	}
                 
                 warningLabel.setText("Unable to make new user");

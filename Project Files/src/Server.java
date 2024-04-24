@@ -113,12 +113,6 @@ public class Server {
 	        
 	        //update command processing
 	        private void handleAddUser(String[] tokens) {
-	        	// TODO
-	        }
-	        
-	        
-	        //remove account
-	        private void handleUpdateUser(String[] tokens) {
 	        	// 0 is reserved for the command
 	        	final int USERNAME = 1;
 	        	final int PW = 2;
@@ -128,7 +122,13 @@ public class Server {
 	        		message = "failed";
 	        	else
 	        		message = "user created";
-	        	out.println(message);
+	        	out.println(message);	        
+	        }
+	        
+	        
+	        //remove account
+	        private void handleUpdateUser(String[] tokens) {
+	        	// TODO
 	        }
 	        
 	        private void handleNewAccount(String[] tokens) {
