@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,12 +8,17 @@ public class User {
 	private String pin;
 	private ArrayList<Account> accounts;
 	private int numAccounts;
-	private String userFile;					// Filename for saving user data
-	private String accountFile;					// Filename for saving account data
 	
-	public User(String username, String pin) {
+	public User(String username, String pin, ArrayList<String> accountIDs) {
 		this.username = username;
 		this.pin = pin;
+		
+		// for each account id, get account from client, addAccount
+		// for (type variableName : arrayName)
+		for(String id : accountIDs) {
+			Account account = StateMachine.client.getAccount(id);
+			addAccount(account);
+		}
 	}
 	
 	public String getUsername() {

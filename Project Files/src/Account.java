@@ -24,6 +24,7 @@ public class Account {
 	
 	public void addToTotal(double amount) {
 		total = total + amount;
+		update();
 	}
 	
 	public void removeFromTotal(double amount) {
@@ -36,11 +37,12 @@ public class Account {
 		}
 		else {
 			total = total - amount;
+			update();
 		}
 	}
 	
 	public void update() {
-
+		StateMachine.client.updateAccount(this);
 	}
 	
 	public String toString() {
