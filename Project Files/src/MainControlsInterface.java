@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -70,6 +71,7 @@ public class MainControlsInterface implements State {
 		*/
 		// TODO
 		if(accountPanelItems.isEmpty()) {
+			JOptionPane.showMessageDialog(frame,  "No accounts available/found", "No Accounts", JOptionPane.INFORMATION_MESSAGE);
 			// Make "no accounts available" panel?
 		}
 	}
