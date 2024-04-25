@@ -39,6 +39,10 @@ public class Account {
 		}
 	}
 	
+	public void update() {
+
+	}
+	
 	public String toString() {
 		String newString = this.id + "/" + this.type + "/" + this.total;
 		return newString;

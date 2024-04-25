@@ -48,26 +48,4 @@ public class User {
 		String newString = this.username + ", " + this.pin;
 		return newString;
 	}
-	
-	public void saveData() throws IOException {
-		File path1 = new File(userFile);
-		FileWriter writer1 = new FileWriter(path1);
-		for (int i = 0; i < numAccounts; i++) {
-			writer1.write(toString() + ", " + accounts.get(i).getID() + "\n");	// Write username, pin, and
-		}																					// accountID into user file
-		writer1.flush();
-		writer1.close();
-		
-		File path2 = new File(userFile);
-		FileWriter writer2 = new FileWriter(path2);
-		for (int i = 0; i < numAccounts; i++) {
-			writer2.write(accounts.get(i).toString() + "\n");	// Write each account into account file in form:
-		}							// id, type, total
-		writer2.flush();
-		writer2.close();
-		return;
-		// Save the username, pin, and IDs of each account in the user file
-		// then for each of the accounts in accounts[],
-		// call .data() and store that in an account file
-	}
 }

@@ -108,6 +108,21 @@ public class Client {
 		return true;
 	}
 	
+	public void getAccount(String id) {
+		// command: getaccount
+	}
+	
+	public Account newAccount(String type) {
+		// command: newaccount
+		
+		return null;
+	}
+	
+	public void updateAccount(Account account) {
+		// Called by accounts when they're changed by MainControl action (deposit, transfer, ...)
+		// command: updateaccount
+	}
+	
 	private String createMessage(String[] tokens) {
 		String message = "";
 		for(String s : tokens) {
