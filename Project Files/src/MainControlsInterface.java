@@ -104,9 +104,10 @@ public class MainControlsInterface implements State {
 			public void actionPerformed(ActionEvent e) {
 				// TODO
 				System.out.println("Deposit pressed");
+				String accountID = JOptionPane.showInputDialog("Enter account id:");
 				String total = JOptionPane.showInputDialog("Enter amount:");
 				double amount = Double.parseDouble(total);
-				StateMachine.user.deposit(null, amount);
+				StateMachine.user.deposit(StateMachine.user.getAccountFromID(accountID), amount);
 			}
 		});
         buttonPanel.add(deposit);
@@ -116,6 +117,10 @@ public class MainControlsInterface implements State {
 			public void actionPerformed(ActionEvent e) {
 				// TODO
 				System.out.println("Withdraw pressed");
+				String accountID = JOptionPane.showInputDialog("Enter account id:");
+				String total = JOptionPane.showInputDialog("Enter amount:");
+				double amount = Double.parseDouble(total);
+				StateMachine.user.withdraw(StateMachine.user.getAccountFromID(accountID), amount);
 			}
 		});
         buttonPanel.add(withdraw);
@@ -125,6 +130,12 @@ public class MainControlsInterface implements State {
 			public void actionPerformed(ActionEvent e) {
 				// TODO
 				System.out.println("Transfer pressed");
+				String accountID1 = JOptionPane.showInputDialog("Enter 1st account id:");
+				String accountID2 = JOptionPane.showInputDialog("Enter 2nd account id:");
+				String total = JOptionPane.showInputDialog("Enter amount:");
+				double amount = Double.parseDouble(total);
+				StateMachine.user.withdraw(StateMachine.user.getAccountFromID(accountID1), amount);
+				StateMachine.user.deposit(StateMachine.user.getAccountFromID(accountID2), amount);
 			}
 		});
         buttonPanel.add(transfer);
