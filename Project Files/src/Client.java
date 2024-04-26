@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Client {
@@ -89,8 +90,12 @@ public class Client {
 		if(response[STATUS].equals("user not found"))
 			return false;
 		
+		ArrayList<String> ids = new ArrayList<String>();
+		for(int i = 1; i < response.length; i++)
+			ids.add(response[i]);
+		
 		// If user exists and pw was correct, initialize user
-		StateMachine.user = new User(username,password);
+		StateMachine.user = new User(username,password,ids);
 		return true;
 	}
 	
@@ -103,9 +108,36 @@ public class Client {
 			return false;
 		
 		// If new user was created, initialize user
-		StateMachine.user = new User(username,password);
+		StateMachine.user = new User(username,password,new ArrayList<String>());
 		System.out.println("successfully made new user");
 		return true;
+	}
+	
+	public Account getAccount(String id) {
+		// command: getaccount
+		// Expect response: id, type, amount
+		String getAccountMessage = createMessage(new String[]{"getaccount",id});
+		String[] response = sendMessage(getAccountMessage);
+		
+		Account account = new Account(response[0],response[1],Double.parseDouble(response[2]));
+		return account;
+	}
+	
+	public Account newAccount(String type) {
+		// command: newaccount
+		String newAccountMessage = createMessage(new String[]{"newaccount",type});
+		String[] response = sendMessage(newAccountMessage);
+		// expected response: id, type, "0.0";
+		
+		Account newAccount = new Account(response[0],response[1],Double.parseDouble(response[2]));
+		return newAccount;
+	}
+	
+	public void updateAccount(Account account) {
+		// Called by accounts when they're changed by MainControl action (deposit, transfer, ...)
+		// command: updateaccount
+		String updateAccountMessage = createMessage(new String[]{"updateaccount",account.getID(),account.getType(),Double.toString(account.getTotal())});
+		sendMessage(updateAccountMessage); // Response isn't needed
 	}
 	
 	private String createMessage(String[] tokens) {

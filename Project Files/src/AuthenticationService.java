@@ -79,22 +79,4 @@ public class AuthenticationService {
 			return false;
 		}
 	}
-
-	/*
-	public static void main(String[] args) {
-		AuthenticationService authService = new AuthenticationService();
-		System.out.println(authService.loginAttempt("nicoSavaides", "5050"));
-		System.out.println(authService.loginAttempt("taylorSwift", "8765"));
-		System.out.println(authService.loginAttempt("baronDavis", "4444"));
-		System.out.println();
-
-		authService.makeNewUserAttempt("addMe", "2420");
-		System.out.println("Hashmap: " + authService.getInfo());
-
-		System.out.println(authService.doesAccountExist("baronDavis", "4444"));
-		System.out.println(authService.doesAccountExist("draymondGreen", "3241"));
-		authService.makeNewUserAttempt("nicoSavaides", "3330");
-
-	}
-	*/
 }

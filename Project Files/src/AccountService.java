@@ -31,7 +31,6 @@ public class AccountService {
 		try {
 			accountFile.createNewFile();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		

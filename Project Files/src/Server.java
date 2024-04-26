@@ -72,9 +72,6 @@ public class Server {
 	                    case "adduser":
 	                        handleAddUser(tokens);
 	                        break;
-	                    case "updateuser":
-	                        handleUpdateUser(tokens);
-	                        break;
 	                    case "newaccount":
 	                        handleNewAccount(tokens);
 	                        break;
@@ -124,13 +121,7 @@ public class Server {
 	        		message = "user created";
 	        	out.println(message);	        
 	        }
-	        
-	        
-	        //remove account
-	        private void handleUpdateUser(String[] tokens) {
-	        	// TODO
-	        }
-	        
+	        	        
 	        private void handleNewAccount(String[] tokens) {
 	        	String accountData = accountService.createAccount(tokens);
 	        	
