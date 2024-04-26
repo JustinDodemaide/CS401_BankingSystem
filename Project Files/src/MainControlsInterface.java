@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -70,6 +71,7 @@ public class MainControlsInterface implements State {
 		*/
 		// TODO
 		if(accountPanelItems.isEmpty()) {
+			JOptionPane.showMessageDialog(frame,  "No accounts available/found", "No Accounts", JOptionPane.INFORMATION_MESSAGE);
 			// Make "no accounts available" panel?
 		}
 	}
@@ -102,6 +104,9 @@ public class MainControlsInterface implements State {
 			public void actionPerformed(ActionEvent e) {
 				// TODO
 				System.out.println("Deposit pressed");
+				String total = JOptionPane.showInputDialog("Enter amount:");
+				double amount = Double.parseDouble(total);
+				StateMachine.user.deposit(null, amount);
 			}
 		});
         buttonPanel.add(deposit);
