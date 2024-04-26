@@ -14,7 +14,6 @@ public class User {
 		this.pin = pin;
 		
 		// for each account id, get account from client, addAccount
-		// for (type variableName : arrayName)
 		for(String id : accountIDs) {
 			Account account = StateMachine.client.getAccount(id);
 			addAccount(account);
@@ -46,6 +45,14 @@ public class User {
 	public void removeAccount(Account account) {
 		accounts.remove(account);				// Remove account from arraylist
 		numAccounts--;
+	}
+	
+	public Account getAccountFromID(String id) {
+		for(Account account : accounts) {
+			if(account.getID().equals(id))
+				return account;
+		}
+		return null;
 	}
 	
 	public String toString() {
