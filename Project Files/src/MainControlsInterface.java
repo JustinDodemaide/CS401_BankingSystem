@@ -104,6 +104,9 @@ public class MainControlsInterface implements State {
 			public void actionPerformed(ActionEvent e) {
 				// TODO
 				System.out.println("Deposit pressed");
+				String total = JOptionPane.showInputDialog("Enter amount:");
+				double amount = Double.parseDouble(total);
+				StateMachine.user.deposit(null, amount);
 			}
 		});
         buttonPanel.add(deposit);
