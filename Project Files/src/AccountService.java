@@ -35,8 +35,8 @@ public class AccountService {
 		}
 		
 		// Add information to the account file
-		// Account data is stored in one line, separated by '/'
-		String line = id + "/" + type + "/" + "0.0";
+		// Account data is stored in one line, separated by ','
+		String line = id + "," + type + "," + "0.0";
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(accountFile);
@@ -98,7 +98,7 @@ public class AccountService {
 			return;
 		}
 		
-		String line = id + "/" + type + "/" + amount;
+		String line = id + "," + type + "," + amount;
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter(accountFile);

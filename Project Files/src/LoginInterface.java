@@ -81,7 +81,7 @@ public class LoginInterface implements State {
                 String password = new String(passwordChars);
                 
                 // Check for illegal characters
-                if(username.contains(",") || password.contains(",")) {
+                if(username.isBlank() || password.isBlank() || username.contains(",") || password.contains(",")) {
                     warningLabel.setText("\',\' not allowed");
                     warningLabel.setVisible(true);
                     usernameField.setText("");
@@ -108,8 +108,7 @@ public class LoginInterface implements State {
     	frame.setVisible(true);
     	
     	// If process is Teller, unhide the "make new user" option
-    	boolean teller = StateMachine.process == StateMachine.processes.TELLER;
-    	tellerPanel.setVisible(teller);
+    	tellerPanel.setVisible(StateMachine.tellerProcess);
     }
 
     public void exit() {

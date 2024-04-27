@@ -1,10 +1,11 @@
 //private BankServer server;
 import java.io.*; // Imports the IO classes for handling input and output streams.
 import java.net.*; // Imports the networking classes for socket communication.
+import java.util.Arrays;
 import java.util.concurrent.*; // Imports concurrency utilities, particularly for managing threads.
 
 public class Server {
-		private static AuthenticationService authenticationService = new AuthenticationService();
+		private static UserService userService = new UserService();
 		private static AccountService accountService = new AccountService();
 	
 		private static final int PORT = 12345; // The port number on which the server listens for connections.
@@ -62,7 +63,7 @@ public class Server {
 	        private void processInput(String inputLine) {
 	            String[] tokens = inputLine.split(",");
 	            String command = tokens[0].toLowerCase();
-	            System.out.println(command);
+	            System.out.println("Command: " + command + "\n");
 
 	            try {
 	                switch (command) {
@@ -72,6 +73,9 @@ public class Server {
 	                    case "adduser":
 	                        handleAddUser(tokens);
 	                        break;
+	                    case "updateuser":
+	                    	updateUser(tokens);
+	                    	break;
 	                    case "newaccount":
 	                        handleNewAccount(tokens);
 	                        break;
@@ -99,13 +103,20 @@ public class Server {
 	        	// 0 is reserved for the command
 	        	final int USERNAME = 1;
 	        	final int PW = 2;
-	        	boolean success = authenticationService.authenticateUser(tokens[USERNAME],tokens[PW]);
+	        	boolean success = userService.authenticateUser(tokens[USERNAME],tokens[PW]);
 	        	String message;
 	        	if(success)
-	        		message = "user found";
+	        		message = userService.getUserData(tokens[USERNAME]);
 	        	else
 	        		message = "user not found";
 	        	out.println(message);
+	        }
+	        
+	        private void updateUser(String[] tokens) {
+	        	String username = tokens[1];
+	        	String pw = tokens[2];
+	        	String[] accountIDs = Arrays.copyOfRange(tokens, 3, tokens.length);
+	        	userService.updateUser(username, pw, accountIDs);
 	        }
 	        
 	        //update command processing
@@ -113,7 +124,7 @@ public class Server {
 	        	// 0 is reserved for the command
 	        	final int USERNAME = 1;
 	        	final int PW = 2;
-	        	boolean success = authenticationService.makeNewUserAttempt(tokens[USERNAME],tokens[PW]);
+	        	boolean success = userService.attemptCreateUser(tokens[USERNAME],tokens[PW]);
 	        	String message;
 	        	if(!success)
 	        		message = "failed";

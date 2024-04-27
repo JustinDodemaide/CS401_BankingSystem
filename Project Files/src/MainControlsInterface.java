@@ -17,7 +17,8 @@ import javax.swing.border.EmptyBorder;
 public class MainControlsInterface implements State {
 	private static final long serialVersionUID = 1L;
 	private JFrame frame = new JFrame(); // Keep the UI elements loaded into memory for performance
-	private JPanel accountPanel = new JPanel();;
+	private JPanel accountPanel = new JPanel();
+	private JPanel buttonPanel;
 	private ArrayList<JPanel> accountPanelItems = new ArrayList<JPanel>();
 	
 	public MainControlsInterface() {
@@ -25,11 +26,10 @@ public class MainControlsInterface implements State {
 		frame.setTitle("Welcome, user");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel buttonPanel = new JPanel();
+		buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(0, 1));
         buttonPanel.setBorder(BorderFactory.createTitledBorder("Options"));
-        addButtons(buttonPanel);
-
+        addButtons();
 
         accountPanel.setLayout(new GridLayout(0, 1));
         accountPanel.setBorder(BorderFactory.createTitledBorder("Accounts"));
@@ -61,23 +61,18 @@ public class MainControlsInterface implements State {
 		
 		// Reset the account items
 		accountPanelItems.clear();
-		// TODO
-		/*
 		for(Account account : StateMachine.user.getAccounts()) {
 			JPanel item = newAccountPanelItem(account);
-			accountPanelItems.add? push?(item);
+			accountPanelItems.add(item);
 			accountPanel.add(item);
 		}
-		*/
-		// TODO
-		if(accountPanelItems.isEmpty()) {
-			JOptionPane.showMessageDialog(frame,  "No accounts available/found", "No Accounts", JOptionPane.INFORMATION_MESSAGE);
-			// Make "no accounts available" panel?
-		}
+
+		// "No accounts available" panel
+		
+		addButtons();
 	}
 	
     private JPanel newAccountPanelItem(Account account) {
-    	// TODO
     	JPanel accountPanel = new JPanel();
         accountPanel.setLayout(new GridLayout(0,1));
 
@@ -98,11 +93,12 @@ public class MainControlsInterface implements State {
         return accountPanel;
     }
     
-    private void addButtons(JPanel buttonPanel) {
+    private void addButtons() {
+    	buttonPanel.removeAll();
+    	
         JButton deposit = new JButton("Deposit");
 		deposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO
 				System.out.println("Deposit pressed");
 				String accountID = JOptionPane.showInputDialog("Enter account id:");
 				String total = JOptionPane.showInputDialog("Enter amount:");
@@ -115,7 +111,6 @@ public class MainControlsInterface implements State {
         JButton withdraw = new JButton("Withdraw");
 		withdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO
 				System.out.println("Withdraw pressed");
 				String accountID = JOptionPane.showInputDialog("Enter account id:");
 				String total = JOptionPane.showInputDialog("Enter amount:");
@@ -128,7 +123,6 @@ public class MainControlsInterface implements State {
         JButton transfer = new JButton("Transfer");
 		transfer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO
 				System.out.println("Transfer pressed");
 				String accountID1 = JOptionPane.showInputDialog("Enter 1st account id:");
 				String accountID2 = JOptionPane.showInputDialog("Enter 2nd account id:");
@@ -140,27 +134,48 @@ public class MainControlsInterface implements State {
 		});
         buttonPanel.add(transfer);
         
-        // TODO
         // Only add these options if a teller is present!
-        //if(StateMachine.processes != StateMachine.processes.teller)
-        //	return;
-        JButton newAccount = new JButton("New Account");
-		newAccount.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO
-				System.out.println("newAccount pressed");
-			}
-		});
-        buttonPanel.add(newAccount);
-        
-        JButton deleteAccount = new JButton("Delete Account");
-		deleteAccount.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO
-				System.out.println("deleteAccount pressed");
-			}
-		});
-        buttonPanel.add(deleteAccount);    
+        if(StateMachine.tellerProcess) {
+	        JButton newAccount = new JButton("New Account");
+			newAccount.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String type = "checking";
+					String[] commands = {"Checking", "Saving"};
+					int choice;
+					choice = JOptionPane.showOptionDialog(null,
+							"Select a command", 
+							"Account Type", 
+							JOptionPane.YES_NO_CANCEL_OPTION, 
+							JOptionPane.QUESTION_MESSAGE, 
+							null, 
+							commands,
+							commands[0]);
+					
+					switch (choice) {
+						case 0: type = "checking";
+						case 1: type = "saving";
+						default:  // do nothing
+					}
+					Account newAccount = StateMachine.client.newAccount(type);
+					StateMachine.user.addAccount(newAccount);
+					System.out.println("newAccount pressed");
+					update();
+				}
+			});
+	        buttonPanel.add(newAccount);
+	        
+	        JButton deleteAccount = new JButton("Delete Account");
+			deleteAccount.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String accountID = JOptionPane.showInputDialog("Enter account id:");
+					Account account = StateMachine.user.getAccountFromID(accountID);
+					StateMachine.user.removeAccount(account);
+					StateMachine.client.removeAccount(account);
+					System.out.println("deleteAccount pressed");
+				}
+			});
+	        buttonPanel.add(deleteAccount);    
+        }
         
         JButton logout = new JButton("Logout");
 		logout.addActionListener(new ActionListener() {

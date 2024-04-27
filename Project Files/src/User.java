@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class User {
 	private String username;
 	private String pin;
-	private ArrayList<Account> accounts;
+	private ArrayList<Account> accounts = new ArrayList<Account>();
 	private int numAccounts;
 	
 	public User(String username, String pin, ArrayList<String> accountIDs) {
@@ -14,14 +14,26 @@ public class User {
 		this.pin = pin;
 		
 		// for each account id, get account from client, addAccount
+		System.out.println("num ids: " + accountIDs.size());
 		for(String id : accountIDs) {
+			System.out.println("id: " + id);
+			
 			Account account = StateMachine.client.getAccount(id);
-			addAccount(account);
+			accounts.add(account);
+			numAccounts++;
 		}
 	}
 	
 	public String getUsername() {
 		return username;
+	}
+	
+	public String getPIN() {
+		return pin;
+	}
+	
+	public ArrayList<Account> getAccounts(){
+		return accounts;
 	}
 	
 	public void deposit(Account account, double amount) {
@@ -40,11 +52,13 @@ public class User {
 	public void addAccount(Account account) {
 		accounts.add(account);					// Add account to arraylist
 		numAccounts++;
+		StateMachine.client.updateUser(this);
 	}
 	
 	public void removeAccount(Account account) {
 		accounts.remove(account);				// Remove account from arraylist
 		numAccounts--;
+		StateMachine.client.updateUser(this);
 	}
 	
 	public Account getAccountFromID(String id) {

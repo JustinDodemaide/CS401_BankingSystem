@@ -4,8 +4,7 @@ public class StateMachine {
 	private static State currentState = states[0];
 	public enum stateNames{CHOOSE_PROCESS,LOGIN,MAIN_CONTROLS};
 	
-	public static processes process;
-	public static enum processes{TELLER,ATM};
+	public static boolean tellerProcess = false;
 	
 	public static Client client = new Client();
 	public static User user;
@@ -19,7 +18,7 @@ public class StateMachine {
 		currentState.enter();
 		
 		if(!client.connectToServer())
-			System.err.println("Client didn't connect to server");
+			System.err.println("Client unable to connect to server");
 	}
 	
 	public static void transitionTo(stateNames targetState) {

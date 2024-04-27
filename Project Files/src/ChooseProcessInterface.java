@@ -23,7 +23,6 @@ public class ChooseProcessInterface implements State{
         JButton atm = new JButton("ATM");
 		atm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				StateMachine.process = StateMachine.processes.ATM;
 				System.out.println("ATM chosen");
 				StateMachine.transitionTo(StateMachine.stateNames.LOGIN);
 			}
@@ -33,7 +32,7 @@ public class ChooseProcessInterface implements State{
         JButton teller = new JButton("Teller");
 		teller.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				StateMachine.process = StateMachine.processes.TELLER;
+				StateMachine.tellerProcess = true;
 				System.out.println("Teller chosen");
 				StateMachine.transitionTo(StateMachine.stateNames.LOGIN);
 			}

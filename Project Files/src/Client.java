@@ -65,9 +65,9 @@ public class Client {
 	}
 	
 	private String[] sendMessage(String message) {
+		System.out.println("Client sending message: " + message + ". Awaiting response...");
 		out.println(message);
 
-		System.out.println("awaiting response");
 		String response = "";
 		try {
 			response = in.readLine();
@@ -76,7 +76,7 @@ public class Client {
 			e.printStackTrace();
 		}
 		
-		System.out.println("response: " + response);
+		System.out.println("Client received response: " + response);
 		// Parse response
 		String[] tokens = parseMessage(response);
 		return tokens;
@@ -91,7 +91,7 @@ public class Client {
 			return false;
 		
 		ArrayList<String> ids = new ArrayList<String>();
-		for(int i = 1; i < response.length; i++)
+		for(int i = 2; i < response.length; i++)
 			ids.add(response[i]);
 		
 		// If user exists and pw was correct, initialize user
@@ -109,8 +109,25 @@ public class Client {
 		
 		// If new user was created, initialize user
 		StateMachine.user = new User(username,password,new ArrayList<String>());
-		System.out.println("successfully made new user");
+		System.out.println("Successfully created new user");
 		return true;
+	}
+	
+	public void updateUser(User user) {
+		int numAccounts = user.getAccounts().size();
+		System.out.println("numAccounts: " + Integer.toString(numAccounts));
+		String[] info = new String[3 + numAccounts];
+		info[0] = "updateuser";
+		info[1] = user.getUsername();
+		info[2] = user.getPIN();
+		ArrayList<Account> accounts = user.getAccounts();
+		for(int i = 0; i < numAccounts; i++) {
+			info[i + 3] = accounts.get(i).getID();
+			System.out.println("account id " + Integer.toString(i) + ": " + info[i + 3]);
+		}
+		System.out.println("info size: " + info.length);
+		String updateUserMessage = createMessage(info);
+		sendMessage(updateUserMessage);
 	}
 	
 	public Account getAccount(String id) {
@@ -128,7 +145,7 @@ public class Client {
 		String newAccountMessage = createMessage(new String[]{"newaccount",type});
 		String[] response = sendMessage(newAccountMessage);
 		// expected response: id, type, "0.0";
-		
+				
 		Account newAccount = new Account(response[0],response[1],Double.parseDouble(response[2]));
 		return newAccount;
 	}
@@ -138,6 +155,12 @@ public class Client {
 		// command: updateaccount
 		String updateAccountMessage = createMessage(new String[]{"updateaccount",account.getID(),account.getType(),Double.toString(account.getTotal())});
 		sendMessage(updateAccountMessage); // Response isn't needed
+	}
+	
+	public void removeAccount(Account account) {
+		String removeAccountMessage = createMessage(new String[]{"removeaccount",account.getID()});
+		sendMessage(removeAccountMessage); // Response isn't needed
+
 	}
 	
 	private String createMessage(String[] tokens) {
