@@ -46,6 +46,7 @@ public class MainControlsInterface implements State {
 	public void enter() {
 		update();
         frame.setVisible(true);
+        frame.setSize(1200, 500);
 	}
 
 	public void exit() {

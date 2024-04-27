@@ -47,6 +47,7 @@ public class ChooseProcessInterface implements State{
 	
 	public void enter() {
 		frame.setVisible(true);
+		frame.setSize(1200, 500);
 	}
 	
 	public void exit() {
