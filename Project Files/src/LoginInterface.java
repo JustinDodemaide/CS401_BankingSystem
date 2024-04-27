@@ -106,7 +106,7 @@ public class LoginInterface implements State {
 
     public void enter() {
     	frame.setVisible(true);
-    	frame.setSize(1200, 500);
+    	frame.setSize(600, 500);
     	
     	// If process is Teller, unhide the "make new user" option
     	tellerPanel.setVisible(StateMachine.tellerProcess);

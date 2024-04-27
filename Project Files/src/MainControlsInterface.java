@@ -19,7 +19,6 @@ public class MainControlsInterface implements State {
 	private JFrame frame = new JFrame(); // Keep the UI elements loaded into memory for performance
 	private JPanel accountPanel = new JPanel();
 	private JPanel buttonPanel;
-	private ArrayList<JPanel> accountPanelItems = new ArrayList<JPanel>();
 	
 	public MainControlsInterface() {
 		frame.setVisible(false);
@@ -46,11 +45,10 @@ public class MainControlsInterface implements State {
 	public void enter() {
 		update();
         frame.setVisible(true);
-        frame.setSize(1200, 500);
+        frame.setSize(600, 250);
 	}
 
 	public void exit() {
-		// Keep it loaded in memory
         frame.setVisible(false);
 	}
 	
@@ -61,28 +59,30 @@ public class MainControlsInterface implements State {
 		frame.setTitle("Welcome, " + StateMachine.user.getUsername());
 		
 		// Reset the account items
-		accountPanelItems.clear();
+		accountPanel.removeAll();
 		for(Account account : StateMachine.user.getAccounts()) {
 			JPanel item = newAccountPanelItem(account);
-			accountPanelItems.add(item);
 			accountPanel.add(item);
 		}
 
-		// "No accounts available" panel
+		// "No accounts available" card
 		
 		addButtons();
+		
+        frame.pack();
+        frame.setLocationRelativeTo(null);
 	}
 	
     private JPanel newAccountPanelItem(Account account) {
     	JPanel accountPanel = new JPanel();
         accountPanel.setLayout(new GridLayout(0,1));
 
-        JLabel label1 = new JLabel("Number");
+        JLabel label1 = new JLabel(account.getID());
         label1.setFont(new Font("Arial", Font.BOLD, 16)); // Make the number stand out from the other text
         label1.setBorder(new EmptyBorder(5, 5, 0, 5)); // Add padding
-        JLabel label2 = new JLabel("Type");
+        JLabel label2 = new JLabel(account.getType());
         label2.setBorder(new EmptyBorder(5, 5, 0, 5));
-        JLabel label3 = new JLabel("Amount");
+        JLabel label3 = new JLabel(Double.toString(account.getTotal()));
         label3.setBorder(new EmptyBorder(5, 5, 0, 5));
 
         accountPanel.add(label1);
@@ -102,9 +102,19 @@ public class MainControlsInterface implements State {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Deposit pressed");
 				String accountID = JOptionPane.showInputDialog("Enter account id:");
+				Account account = StateMachine.user.getAccountFromID(accountID);
+				if(account == null) {
+					JOptionPane.showMessageDialog(frame, "Could not find account (" + accountID + ")", "Invalid ID", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
 				String total = JOptionPane.showInputDialog("Enter amount:");
 				double amount = Double.parseDouble(total);
-				StateMachine.user.deposit(StateMachine.user.getAccountFromID(accountID), amount);
+				if(amount <= 0) {
+					JOptionPane.showMessageDialog(frame, "Invalid Amount", "Invalid Amount", JOptionPane.INFORMATION_MESSAGE);
+					return;		
+				}
+				StateMachine.user.deposit(account, amount);
+				update();
 			}
 		});
         buttonPanel.add(deposit);
@@ -114,9 +124,19 @@ public class MainControlsInterface implements State {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Withdraw pressed");
 				String accountID = JOptionPane.showInputDialog("Enter account id:");
+				Account account = StateMachine.user.getAccountFromID(accountID);
+				if(account == null) {
+					JOptionPane.showMessageDialog(frame, "Could not find account (" + accountID + ")", "Invalid ID", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
 				String total = JOptionPane.showInputDialog("Enter amount:");
 				double amount = Double.parseDouble(total);
-				StateMachine.user.withdraw(StateMachine.user.getAccountFromID(accountID), amount);
+				if(amount <= 0 || amount > account.getTotal()) {
+					JOptionPane.showMessageDialog(frame, "Invalid Amount", "Invalid Amount", JOptionPane.INFORMATION_MESSAGE);
+					return;		
+				}
+				StateMachine.user.withdraw(account, amount);
+				update();
 			}
 		});
         buttonPanel.add(withdraw);
@@ -126,11 +146,26 @@ public class MainControlsInterface implements State {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Transfer pressed");
 				String accountID1 = JOptionPane.showInputDialog("Enter 1st account id:");
+				Account account1 = StateMachine.user.getAccountFromID(accountID1);
+				if(account1 == null) {
+					JOptionPane.showMessageDialog(frame, "Could not find account (" + accountID1 + ")", "Invalid ID", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
 				String accountID2 = JOptionPane.showInputDialog("Enter 2nd account id:");
+				Account account2 = StateMachine.user.getAccountFromID(accountID2);
+				if(account2 == null) {
+					JOptionPane.showMessageDialog(frame, "Could not find account (" + accountID2 + ")", "Invalid ID", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
 				String total = JOptionPane.showInputDialog("Enter amount:");
 				double amount = Double.parseDouble(total);
-				StateMachine.user.withdraw(StateMachine.user.getAccountFromID(accountID1), amount);
-				StateMachine.user.deposit(StateMachine.user.getAccountFromID(accountID2), amount);
+				if(amount <= 0 || amount > account1.getTotal()) {
+					JOptionPane.showMessageDialog(frame, "Invalid Amount", "Invalid Amount", JOptionPane.INFORMATION_MESSAGE);
+					return;		
+				}
+				StateMachine.user.withdraw(account1, amount);
+				StateMachine.user.deposit(account2, amount);
+				update();
 			}
 		});
         buttonPanel.add(transfer);
@@ -153,10 +188,11 @@ public class MainControlsInterface implements State {
 							commands[0]);
 					
 					switch (choice) {
-						case 0: type = "checking";
-						case 1: type = "saving";
+						case 0: type = "checking"; break;
+						case 1: type = "saving"; break;
 						default:  // do nothing
 					}
+					System.out.println("choice: " + choice);
 					Account newAccount = StateMachine.client.newAccount(type);
 					StateMachine.user.addAccount(newAccount);
 					System.out.println("newAccount pressed");
@@ -170,9 +206,14 @@ public class MainControlsInterface implements State {
 				public void actionPerformed(ActionEvent e) {
 					String accountID = JOptionPane.showInputDialog("Enter account id:");
 					Account account = StateMachine.user.getAccountFromID(accountID);
+					if(account == null) {
+						JOptionPane.showMessageDialog(frame, "Could not find account (" + accountID + ")", "Invalid ID", JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
 					StateMachine.user.removeAccount(account);
 					StateMachine.client.removeAccount(account);
 					System.out.println("deleteAccount pressed");
+					update();
 				}
 			});
 	        buttonPanel.add(deleteAccount);    

@@ -117,6 +117,9 @@ public class Server {
 	        	String pw = tokens[2];
 	        	String[] accountIDs = Arrays.copyOfRange(tokens, 3, tokens.length);
 	        	userService.updateUser(username, pw, accountIDs);
+	        	out.println("success");
+	        	// Client is awaiting reply, so message needs to be sent even
+	        	// if the client won't do anything with it
 	        }
 	        
 	        //update command processing
@@ -153,10 +156,13 @@ public class Server {
 	        
 	        private void handleUpdateAccount(String[] tokens) {
 	        	accountService.updateAccount(tokens);
+	        	out.println("success"); 
+
 	        }
 	        
 	        private void handleRemoveAccount(String[] tokens) {
 	        	accountService.closeAccount(tokens);
+	        	out.println("success");
 	        }
 	        
 	        private void closeConnections() throws IOException {
