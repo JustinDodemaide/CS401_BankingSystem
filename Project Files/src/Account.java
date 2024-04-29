@@ -1,3 +1,4 @@
+package bankingPackage;
 
 public class Account {
 	private String id;
@@ -28,8 +29,6 @@ public class Account {
 	}
 	
 	public void removeFromTotal(double amount) {
-
-		total = total - amount;
 
 		if ((total - amount) < 0) {
 			System.out.println("Cannot withdraw as overdraft fees would incur...");
