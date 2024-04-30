@@ -1,13 +1,9 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class User {
 	private String username;
 	private String pin;
 	private ArrayList<Account> accounts = new ArrayList<Account>();
-	private int numAccounts;
 	
 	public User(String username, String pin, ArrayList<String> accountIDs) {
 		this.username = username;
@@ -20,7 +16,6 @@ public class User {
 			
 			Account account = StateMachine.client.getAccount(id);
 			accounts.add(account);
-			numAccounts++;
 		}
 	}
 	
@@ -51,13 +46,11 @@ public class User {
 	
 	public void addAccount(Account account) {
 		accounts.add(account);					// Add account to arraylist
-		numAccounts++;
 		StateMachine.client.updateUser(this);
 	}
 	
 	public void removeAccount(Account account) {
 		accounts.remove(account);				// Remove account from arraylist
-		numAccounts--;
 		StateMachine.client.updateUser(this);
 	}
 	
