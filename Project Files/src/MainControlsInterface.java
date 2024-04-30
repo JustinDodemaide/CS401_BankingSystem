@@ -15,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 public class MainControlsInterface implements State {
-	private static final long serialVersionUID = 1L;
 	private JFrame frame = new JFrame(); // Keep the UI elements loaded into memory for performance
 	private JPanel accountPanel = new JPanel();
 	private JPanel buttonPanel;
@@ -82,7 +81,7 @@ public class MainControlsInterface implements State {
         label1.setBorder(new EmptyBorder(5, 5, 0, 5)); // Add padding
         JLabel label2 = new JLabel(account.getType());
         label2.setBorder(new EmptyBorder(5, 5, 0, 5));
-        JLabel label3 = new JLabel(Double.toString(account.getTotal()));
+        JLabel label3 = new JLabel("$" + Double.toString(account.getTotal()));
         label3.setBorder(new EmptyBorder(5, 5, 0, 5));
 
         accountPanel.add(label1);
@@ -179,7 +178,7 @@ public class MainControlsInterface implements State {
 					String[] commands = {"Checking", "Saving"};
 					int choice;
 					choice = JOptionPane.showOptionDialog(null,
-							"Select a command", 
+							"Select Account Type", 
 							"Account Type", 
 							JOptionPane.YES_NO_CANCEL_OPTION, 
 							JOptionPane.QUESTION_MESSAGE, 
@@ -208,6 +207,10 @@ public class MainControlsInterface implements State {
 					Account account = StateMachine.user.getAccountFromID(accountID);
 					if(account == null) {
 						JOptionPane.showMessageDialog(frame, "Could not find account (" + accountID + ")", "Invalid ID", JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
+					if(account.getTotal() > 0) {
+						JOptionPane.showMessageDialog(frame, "Can't remove non-empty account", "Can't remove non-empty account", JOptionPane.INFORMATION_MESSAGE);
 						return;
 					}
 					StateMachine.user.removeAccount(account);
