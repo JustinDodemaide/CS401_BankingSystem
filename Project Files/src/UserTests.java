@@ -1,11 +1,7 @@
-package bankingTests;
-
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import bankingPackage.Account;
-import bankingPackage.User;
 import org.junit.Test;
 
 public class UserTests {
